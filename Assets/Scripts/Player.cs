@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] //attribute
     private float _speed = 5f;
+    [SerializeField] //attribute
+    private GameObject laserPrefab;
+    [SerializeField]
+    private float laserOffset = 5f;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +22,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         PlayerMovement();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            InstantiateLaser();
+        }
     }
 
     void PlayerMovement()
@@ -40,6 +50,7 @@ public class Player : MonoBehaviour
         }
         */
 
+        // clipping plane to limit player movement
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4, 4), transform.position.z);
 
         if (transform.position.x >= 4)
@@ -51,6 +62,16 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(4, transform.position.y, transform.position.z);
         }
+    }
+
+    void InstantiateLaser()
+    {
+        Debug.Log("Space bar pressed.");
+        Instantiate(laserPrefab, 
+            new Vector3(transform.position.x, transform.position.y + laserOffset, transform.position.z), 
+            Quaternion.identity);
+
+        Instantiate(laserPrefab, transform.position + new Vector3(0, laserOffset, 0), Quaternion.identity);
     }
 }
 
