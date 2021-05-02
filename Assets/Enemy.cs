@@ -5,11 +5,6 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private float _enemySpeed = 4f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -24,14 +19,21 @@ public class Enemy : MonoBehaviour
             transform.position = new Vector3(randomX, 5, transform.position.z);
         }
     }
-
+ 
     private void OnTriggerEnter(Collider other) 
     {
         if (other.tag == "Player")
         {
             Debug.Log("Hit " + other.transform.name);
             Destroy(this.gameObject);
-            Destroy(other.gameObject);
+
+            //other.GetComponent<Player>().Damage();
+            Player player = other.GetComponent<Player>();
+
+            if (player != null) //null checking to avoid errors/crash when playing.
+            {
+                player.Damage();
+            }
         }
 
         if (other.tag == "Laser")
@@ -40,7 +42,5 @@ public class Enemy : MonoBehaviour
             Destroy(other.gameObject);
             Destroy(this.gameObject);
         }
-
-
     }
 }

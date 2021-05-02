@@ -323,6 +323,7 @@ MonoBehaviour:
   _speed: 5
   laserPrefab: {fileID: 2718672376631126192, guid: 114121aa671b39244be0aa14952e958e,
     type: 3}
+  _lives: 3
 --- !u!54 &1539728345
 Rigidbody:
   m_ObjectHideFlags: 0
