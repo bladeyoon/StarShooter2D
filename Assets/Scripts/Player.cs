@@ -5,11 +5,16 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] //attribute
-    private float _speed = 5f;
+    private float _speed = 5.5f;
+
     [SerializeField] //attribute
     private GameObject laserPrefab;
-    [SerializeField]
-    private float laserOffset = 5f;
+
+    private float laserOffset = 1f;
+    private float _fireRate = 0.15f;
+    private float _canFire = -1f;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +28,7 @@ public class Player : MonoBehaviour
     {
         PlayerMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && Time.time > _canFire)
         {
             InstantiateLaser();
         }
@@ -38,21 +43,10 @@ public class Player : MonoBehaviour
         transform.Translate(Vector3.right * horizontalInput * _speed * Time.deltaTime);
         transform.Translate(Vector3.up * verticalInput * _speed * Time.deltaTime);
 
-        /*
-        if (transform.position.y >= 4)
-        {
-            transform.position = new Vector3(transform.position.x, 4, transform.position.z);
-        }
-
-        else if (transform.position.y <= -4)
-        {
-            transform.position = new Vector3(transform.position.x, -4, transform.position.z);
-        }
-        */
-
         // clipping plane to limit player movement
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4, 4), transform.position.z);
 
+        // moving the player to the other side
         if (transform.position.x >= 4)
         {
             transform.position = new Vector3(-4, transform.position.y, transform.position.z);
@@ -67,13 +61,28 @@ public class Player : MonoBehaviour
     void InstantiateLaser()
     {
         Debug.Log("Space bar pressed.");
-        Instantiate(laserPrefab, 
-            new Vector3(transform.position.x, transform.position.y + laserOffset, transform.position.z), 
-            Quaternion.identity);
+
+        _canFire = Time.time + _fireRate;
 
         Instantiate(laserPrefab, transform.position + new Vector3(0, laserOffset, 0), Quaternion.identity);
+
+        /* Instantiate(laserPrefab, 
+             new Vector3(transform.position.x, transform.position.y + laserOffset, transform.position.z), 
+             Quaternion.identity);
+        */
+
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 // Move an object to right direction in real time
