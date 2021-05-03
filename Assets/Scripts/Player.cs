@@ -76,8 +76,11 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
+        //when collided with an enemy, lose 1 life.
         _lives -= 1; //_lives = _lives - 1 //_lives--;
         Debug.Log("Lives = " + _lives);
+        
+        //lives reach 0, destroy the player
         if (_lives <= 0)
         {
             Destroy(this.gameObject);
