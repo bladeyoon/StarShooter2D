@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] //attribute
     private GameObject laserPrefab;
 
-    private float laserOffset = 1f;
+    private float laserOffset = 1.2f;
     private float _fireRate = 0.15f;
     private float _canFire = -1f;
 
@@ -61,14 +61,14 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4, 4), transform.position.z);
 
         // moving the player to the other side
-        if (transform.position.x >= 4)
+        if (transform.position.x >= 9)
         {
-            transform.position = new Vector3(-4, transform.position.y, transform.position.z);
+            transform.position = new Vector3(-9, transform.position.y, transform.position.z);
         }
 
-        else if (transform.position.x <= -4)
+        else if (transform.position.x <= -9)
         {
-            transform.position = new Vector3(4, transform.position.y, transform.position.z);
+            transform.position = new Vector3(9, transform.position.y, transform.position.z);
         }
     }
 
