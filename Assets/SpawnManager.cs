@@ -4,35 +4,42 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject enemyPrefab;
 
-    // Start is called before the first frame update
+    [SerializeField]
+    private GameObject _enemyPrefab;
+    [SerializeField]
+    private GameObject _enemyContainer;
+    [SerializeField]
+    private bool _stopSpawning = false;
+
+    //spawn game objects every 3 seconds
+    //create a coroutine of type IEnumerator -- yield events
+    // while loop
+
     void Start()
     {
         StartCoroutine(SpawnEnemies());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    //spawn game objects every 5 seconds
-    //create a coroutine of type IEnumerator -- yield events
-    // while loop
-
     IEnumerator SpawnEnemies()
     {
-        //while loop (infinite loop)
-        // instantiate enemy prefab
-        // yield wait for 5 seconds
-        while (true)
+        // while loop (infinite loop)
+           // instantiate enemy prefab
+           // yield wait for 3 seconds
+        while (_stopSpawning == false)
         {
             int xRandom = Random.Range(-5, 5);
             Vector3 randomPos = new Vector3(xRandom, 5, 0);
-            Instantiate(enemyPrefab, randomPos, Quaternion.identity);
-            yield return new WaitForSeconds(5f);
+            GameObject newEnemy = Instantiate(_enemyPrefab, randomPos, Quaternion.identity);
+            
+            //transfer enemy to 'EnemyContainer' gameobject.
+            newEnemy.transform.parent = _enemyContainer.transform;
+            yield return new WaitForSeconds(3f);
         }
+    }
+
+    public void OnPlayerDeath()
+    {
+        _stopSpawning = true;
     }
 }

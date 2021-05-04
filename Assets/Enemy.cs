@@ -13,11 +13,12 @@ public class Enemy : MonoBehaviour
         transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
         
         //destroy when enemy is at -5 or lower in Y direction
-
+        /*
         if (transform.position.y < -5)
         {
             Destroy(this.gameObject);
         }
+        */
 
         /*
         //respawn at top with a new random X position
