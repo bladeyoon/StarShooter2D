@@ -8,9 +8,11 @@ public class Player : MonoBehaviour
     private float _speed = 5.5f;
 
     [SerializeField] //attribute
-    private GameObject laserPrefab;
+    private GameObject _singleLaserPrefab;
+    [SerializeField]
+    private GameObject _tripleLaserPrefab;
 
-    private float laserOffset = 1.2f;
+    private float _laserOffset = 1.2f;
     private float _fireRate = 0.15f;
     private float _canFire = -1f;
 
@@ -20,6 +22,11 @@ public class Player : MonoBehaviour
     //Assign 
     [SerializeField]
     private SpawnManager _spawnManager;
+
+
+    //variable for istripleshotactive
+    [SerializeField]
+    private bool _isTripleShotActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -44,7 +51,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space) && Time.time > _canFire)
         {
-            InstantiateLaser();
+            FireLaser();
         }
     }
 
@@ -72,18 +79,24 @@ public class Player : MonoBehaviour
         }
     }
 
-    void InstantiateLaser()
+    void FireLaser()
     {
         Debug.Log("Space bar pressed.");
 
         _canFire = Time.time + _fireRate;
 
-        Instantiate(laserPrefab, transform.position + new Vector3(0, laserOffset, 0), Quaternion.identity);
+        //if bool tripleshot true
+               //instantiate triple shot prefab
+        //else fire 1 laser
 
-        /* Instantiate(laserPrefab, 
-             new Vector3(transform.position.x, transform.position.y + laserOffset, transform.position.z), 
-             Quaternion.identity);
-        */
+            if (_isTripleShotActive == true)
+            {
+                Instantiate(_tripleLaserPrefab, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(_singleLaserPrefab, transform.position + new Vector3(0, _laserOffset, 0), Quaternion.identity);
+            }
     }
 
     public void Damage()
@@ -95,12 +108,24 @@ public class Player : MonoBehaviour
         //lives reach 0, destroy the player
         if (_lives <= 0)
         {
-            //communicate with Spawn Manager
-            //Let them know to stop spawning
+            //communicate with Spawn Manager & Let them know to stop spawning
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
         }
     }
+
+    public void TripleShotEnabled()
+    {
+        _isTripleShotActive = true;
+        StartCoroutine(PowerUpCountDown());
+    }
+
+    IEnumerator PowerUpCountDown()
+    {
+        yield return new WaitForSeconds(5f);
+        _isTripleShotActive = false;
+    }
+
 }
 
 
