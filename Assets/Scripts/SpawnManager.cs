@@ -8,6 +8,9 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
+    private GameObject _PowerUp;
+
+    [SerializeField]
     private GameObject _enemyContainer;
     [SerializeField]
     private bool _stopSpawning = false;
@@ -18,10 +21,11 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnPowerUpRoutine());
     }
 
-    IEnumerator SpawnEnemies()
+    IEnumerator SpawnEnemyRoutine()
     {
         // while loop (infinite loop)
            // instantiate enemy prefab
@@ -31,10 +35,22 @@ public class SpawnManager : MonoBehaviour
             int xRandom = Random.Range(-5, 5);
             Vector3 randomPos = new Vector3(xRandom, 5, 0);
             GameObject newEnemy = Instantiate(_enemyPrefab, randomPos, Quaternion.identity);
-            
             //transfer enemy to 'EnemyContainer' gameobject.
             newEnemy.transform.parent = _enemyContainer.transform;
             yield return new WaitForSeconds(3f);
+        }
+    }
+
+    IEnumerator SpawnPowerUpRoutine()
+    {
+        while(_stopSpawning == false)
+        {
+            int Xrandom = Random.Range(-5, 5);
+            Vector3 randomPos = new Vector3(Xrandom, 5, 0);
+            Instantiate(_PowerUp, randomPos, Quaternion.identity);
+
+            float randomSec = Random.Range(5f, 10f);
+            yield return new WaitForSeconds(randomSec);
         }
     }
 
