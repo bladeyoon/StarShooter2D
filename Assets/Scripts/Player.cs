@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
     [SerializeField] //attribute
     private float _speed = 5.5f;
 
+    [SerializeField]
+    private int _speedMultiplier = 2;
+
     [SerializeField] //attribute
     private GameObject _singleLaserPrefab;
     [SerializeField]
@@ -27,6 +30,12 @@ public class Player : MonoBehaviour
     //variable for istripleshotactive
     [SerializeField]
     private bool _isTripleShotActive = false;
+
+    [SerializeField]
+    private bool _isSpeedBoostActive = false;
+
+    [SerializeField]
+    private bool _isShieldActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -61,8 +70,12 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        transform.Translate(Vector3.right * horizontalInput * _speed * Time.deltaTime);
-        transform.Translate(Vector3.up * verticalInput * _speed * Time.deltaTime);
+        //Alternative Solution to below
+        //transform.Translate(Vector3.right * horizontalInput * _speed * Time.deltaTime);
+        //transform.Translate(Vector3.up * verticalInput * _speed * Time.deltaTime);
+
+        Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+        transform.Translate(direction * _speed * Time.deltaTime);
 
         // clipping plane to limit player movement
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4, 4), transform.position.z);
@@ -128,14 +141,28 @@ public class Player : MonoBehaviour
 
     public void SpeedUpEnabled()
     {
-        _speed = 10f;
+        _isSpeedBoostActive = true;
+        _speed *= _speedMultiplier;
         StartCoroutine(SpeedUpCountDown());
     }
 
     IEnumerator SpeedUpCountDown()
     {
         yield return new WaitForSeconds(5f);
-        _speed = 5.5f;
+        _isSpeedBoostActive = false;
+        _speed /= _speedMultiplier;
+    }
+
+    public void ShieldEnabled()
+    {
+        _isShieldActive = true;
+        StartCoroutine(ShieldCountDown());
+    }
+
+    IEnumerator ShieldCountDown()
+    {
+        yield return new WaitForSeconds(5f);
+        _isShieldActive = false;
     }
 }
 

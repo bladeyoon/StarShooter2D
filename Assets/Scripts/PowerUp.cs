@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerUp_TripleShot : MonoBehaviour
+public class PowerUp : MonoBehaviour
 {
+    [SerializeField]
     private float _speed = 3f;
+
+    [SerializeField] //TripleShot = 0, SpeedUp = 1, Shield = 2
+    private int powerUpID;
+
 
     // Update is called once per frame
     void Update()
@@ -31,7 +36,21 @@ public class PowerUp_TripleShot : MonoBehaviour
 
             if (player != null)
             {
-                player.TripleShotEnabled();
+                switch(powerUpID)
+                {
+                    case 0:
+                        player.TripleShotEnabled();
+                        break;
+                    case 1:
+                        player.SpeedUpEnabled();
+                        break;
+                    case 2:
+                        player.ShieldEnabled();
+                        break;
+                    default:
+                        Debug.Log("unassigned value");
+                        break;
+                }
             }
 
             Destroy(this.gameObject);

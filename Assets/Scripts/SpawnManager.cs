@@ -4,28 +4,21 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-
     [SerializeField]
     private GameObject _enemyPrefab;
     [SerializeField]
-    private GameObject _PowerUp;
-    [SerializeField]
-    private GameObject _SpeedUp;
+    private GameObject _enemyContainer;
 
     [SerializeField]
-    private GameObject _enemyContainer;
+    private GameObject[] _powerUps;
+
     [SerializeField]
     private bool _stopSpawning = false;
-
-    //spawn game objects every 3 seconds
-    //create a coroutine of type IEnumerator -- yield events
-    // while loop
 
     void Start()
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
-        StartCoroutine(SpawnSpeedUpRoutine());
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -40,7 +33,9 @@ public class SpawnManager : MonoBehaviour
             GameObject newEnemy = Instantiate(_enemyPrefab, randomPos, Quaternion.identity);
             //transfer enemy to 'EnemyContainer' gameobject.
             newEnemy.transform.parent = _enemyContainer.transform;
-            yield return new WaitForSeconds(3f);
+
+            float randomSec = Random.Range(1f, 5f);
+            yield return new WaitForSeconds(randomSec);
         }
     }
 
@@ -50,20 +45,8 @@ public class SpawnManager : MonoBehaviour
         {
             int Xrandom = Random.Range(-5, 5);
             Vector3 randomPos = new Vector3(Xrandom, 5, 0);
-            Instantiate(_PowerUp, randomPos, Quaternion.identity);
-
-            float randomSec = Random.Range(5f, 10f);
-            yield return new WaitForSeconds(randomSec);
-        }
-    }
-
-    IEnumerator SpawnSpeedUpRoutine()
-    {
-        while (_stopSpawning == false)
-        {
-            int xRandom = Random.Range(-5, 5);
-            Vector3 randomPos = new Vector3(xRandom, 5, 0);
-            Instantiate(_SpeedUp, randomPos, Quaternion.identity);
+            int randomPowerUps = Random.Range(0, 3);
+            Instantiate(_powerUps[randomPowerUps], randomPos, Quaternion.identity);
 
             float randomSec = Random.Range(5f, 10f);
             yield return new WaitForSeconds(randomSec);
