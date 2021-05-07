@@ -281,7 +281,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 3611090847045591038, guid: 155085b049a3221419b93892690fd29e,
     type: 3}
-  _PowerUp: {fileID: 5000910925775361628, guid: 9490024a077959f468caf0f5e6619835,
+  _PowerUp: {fileID: 5000910925775361628, guid: 2db109d1682ab3944be030746603465b,
+    type: 3}
+  _SpeedUp: {fileID: 3435021646339555500, guid: dbe998d1657974f4a91590bc97b38d02,
     type: 3}
   _enemyContainer: {fileID: 1418945489}
   _stopSpawning: 0

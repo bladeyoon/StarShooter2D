@@ -126,6 +126,17 @@ public class Player : MonoBehaviour
         _isTripleShotActive = false;
     }
 
+    public void SpeedUpEnabled()
+    {
+        _speed = 10f;
+        StartCoroutine(SpeedUpCountDown());
+    }
+
+    IEnumerator SpeedUpCountDown()
+    {
+        yield return new WaitForSeconds(5f);
+        _speed = 5.5f;
+    }
 }
 
 
