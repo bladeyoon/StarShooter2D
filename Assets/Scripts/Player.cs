@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _tripleLaserPrefab;
 
+    [SerializeField]
+    private GameObject _ShieldPrefab;
+
     private float _laserOffset = 1.2f;
     private float _fireRate = 0.15f;
     private float _canFire = -1f;
@@ -98,10 +101,6 @@ public class Player : MonoBehaviour
 
         _canFire = Time.time + _fireRate;
 
-        //if bool tripleshot true
-               //instantiate triple shot prefab
-        //else fire 1 laser
-
             if (_isTripleShotActive == true)
             {
                 Instantiate(_tripleLaserPrefab, transform.position, Quaternion.identity);
@@ -114,10 +113,18 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        //when collided with an enemy, lose 1 life.
-        _lives -= 1; //_lives = _lives - 1 //_lives--;
-        Debug.Log("Lives = " + _lives);
-        
+        if (_isShieldActive == true)
+        {
+            _isShieldActive = false;
+            _ShieldPrefab.SetActive(false);
+            return;
+        }
+
+        else
+        {
+            _lives -= 1; //_lives = _lives - 1 //_lives--;
+            Debug.Log("Lives = " + _lives);
+        }
         //lives reach 0, destroy the player
         if (_lives <= 0)
         {
@@ -156,13 +163,16 @@ public class Player : MonoBehaviour
     public void ShieldEnabled()
     {
         _isShieldActive = true;
+        _ShieldPrefab.SetActive(true);
         StartCoroutine(ShieldCountDown());
     }
 
     IEnumerator ShieldCountDown()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(10f);
         _isShieldActive = false;
+        _ShieldPrefab.SetActive(false);
+
     }
 }
 
