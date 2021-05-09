@@ -6,6 +6,18 @@ public class Enemy : MonoBehaviour
 {
     private float _enemySpeed = 4f;
 
+    [SerializeField]
+    private UIManager _uIManager;
+
+    void Start()
+    {
+        _uIManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+        if (_uIManager == null)
+        {
+            Debug.LogError("The UI_Manager is NULL.");
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -34,17 +46,14 @@ public class Enemy : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            // destroy Enemy
-            Destroy(this.gameObject);
-
-            // Get Damage() in Player script & reduce 1 life.
-
             Player player = other.GetComponent<Player>();
-
             if (player != null) //null checking to avoid errors/crash when playing.
             {
                 player.Damage();
             }
+
+            // destroy Enemy
+            Destroy(this.gameObject);
 
             //other.GetComponent<Player>().Damage();
         }
@@ -52,6 +61,7 @@ public class Enemy : MonoBehaviour
         if (other.tag == "Laser")
         {
             Debug.Log("hit " + other.transform.name);
+            _uIManager.AddScore(Random.Range(5, 15));
             Destroy(other.gameObject);
             Destroy(this.gameObject);
         }

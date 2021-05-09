@@ -25,10 +25,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
 
+
+
     //Assign 
     [SerializeField]
     private SpawnManager _spawnManager;
 
+    [SerializeField]
+    private UIManager _uIManager;
 
     //variable for istripleshotactive
     [SerializeField]
@@ -46,14 +50,18 @@ public class Player : MonoBehaviour
         //make current position = new transform.position (0,0,0)
         transform.position = new Vector3(0, 0, 0);
 
-        //
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-
-        //Null check
         if (_spawnManager == null)
         {
             Debug.LogError("The Spawn Manager is NULL!");
         }
+
+        _uIManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
+        if (_uIManager == null)
+        {
+            Debug.LogError("UI Manager is NULL.");
+        }
+
     }
 
     // Update is called once per frame
@@ -119,12 +127,10 @@ public class Player : MonoBehaviour
             _ShieldPrefab.SetActive(false);
             return;
         }
+           _lives -= 1; //_lives = _lives - 1 //_lives--;
+           Debug.Log("Lives = " + _lives);
+            _uIManager.UpdateLives(_lives);
 
-        else
-        {
-            _lives -= 1; //_lives = _lives - 1 //_lives--;
-            Debug.Log("Lives = " + _lives);
-        }
         //lives reach 0, destroy the player
         if (_lives <= 0)
         {
@@ -172,7 +178,6 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(10f);
         _isShieldActive = false;
         _ShieldPrefab.SetActive(false);
-
     }
 }
 
