@@ -9,6 +9,12 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private UIManager _uIManager;
 
+    [SerializeField]
+    private Animator _enemyVFX;
+
+    [SerializeField]
+    private bool _isEnemyDying = false;
+
     void Start()
     {
         _uIManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
@@ -16,54 +22,49 @@ public class Enemy : MonoBehaviour
         {
             Debug.LogError("The UI_Manager is NULL.");
         }
+
+        _enemyVFX = GetComponent<Animator>();
+        {
+            if (_enemyVFX == null)
+            {
+                Debug.LogError("The Enemy Animator is NULL.");
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        //move the enemy down at 4 meters per second
         transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
-        
-        //destroy when enemy is at -5 or lower in Y direction
-        /*
-        if (transform.position.y < -5)
-        {
-            Destroy(this.gameObject);
-        }
-        */
-
-        /*
-        //respawn at top with a new random X position
-        if (transform.position.y < -5)
-        {
-            float randomX = Random.Range(-5, 5);
-            transform.position = new Vector3(randomX, 5, transform.position.z);
-        }
-        */
     }
  
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if (other.tag == "Player")
+        if (_isEnemyDying == false)
         {
-            Player player = other.GetComponent<Player>();
-            if (player != null) //null checking to avoid errors/crash when playing.
+            if (other.tag == "Player")
             {
-                player.Damage();
+                Player player = other.GetComponent<Player>();
+                if (player != null) //null checking
+                {
+                    player.Damage();
+                }
+                _enemyVFX.SetTrigger("OnEnemyDeath");
+                _isEnemyDying = true;
+                _enemySpeed = 2f;
+                Destroy(this.gameObject, 3f); // destroy Enemy
             }
 
-            // destroy Enemy
-            Destroy(this.gameObject);
-
-            //other.GetComponent<Player>().Damage();
-        }
-
-        if (other.tag == "Laser")
-        {
-            Debug.Log("hit " + other.transform.name);
-            _uIManager.AddScore(Random.Range(5, 15));
-            Destroy(other.gameObject);
-            Destroy(this.gameObject);
+            if (other.tag == "Laser")
+            {
+                Debug.Log("hit " + other.transform.name);
+                _uIManager.AddScore(Random.Range(5, 15));
+                Destroy(other.gameObject);
+                _enemyVFX.SetTrigger("OnEnemyDeath");
+                _isEnemyDying = true;
+                _enemySpeed = 2f;
+                Destroy(this.gameObject, 3f);
+            }
         }
     }
 }
