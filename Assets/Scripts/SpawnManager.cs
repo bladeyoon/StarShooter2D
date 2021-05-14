@@ -15,7 +15,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private bool _stopSpawning = false;
 
-    void Start()
+    public void EnemySpawnCoroutine()
     {
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerUpRoutine());
@@ -23,9 +23,8 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnEnemyRoutine()
     {
-        // while loop (infinite loop)
-           // instantiate enemy prefab
-           // yield wait for 3 seconds
+        yield return new WaitForSeconds(3f);
+
         while (_stopSpawning == false)
         {
             int xRandom = Random.Range(-5, 5);
@@ -41,7 +40,9 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPowerUpRoutine()
     {
-        while(_stopSpawning == false)
+        yield return new WaitForSeconds(3f);
+
+        while (_stopSpawning == false)
         {
             int Xrandom = Random.Range(-5, 5);
             Vector3 randomPos = new Vector3(Xrandom, 5, 0);

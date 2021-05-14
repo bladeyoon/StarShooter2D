@@ -25,24 +25,20 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
 
-
-
-    //Assign 
     [SerializeField]
     private SpawnManager _spawnManager;
 
     [SerializeField]
     private UIManager _uIManager;
 
-    //variable for istripleshotactive
     [SerializeField]
     private bool _isTripleShotActive = false;
 
     [SerializeField]
-    private bool _isSpeedBoostActive = false;
+    private bool _isShieldActive = false;
 
     [SerializeField]
-    private bool _isShieldActive = false;
+    private GameObject _rightEngineDamage, _leftEngineDamage;
 
     // Start is called before the first frame update
     void Start()
@@ -62,6 +58,8 @@ public class Player : MonoBehaviour
             Debug.LogError("UI Manager is NULL.");
         }
 
+        _rightEngineDamage.SetActive(false);
+        _leftEngineDamage.SetActive(false);
     }
 
     // Update is called once per frame
@@ -131,6 +129,16 @@ public class Player : MonoBehaviour
            Debug.Log("Lives = " + _lives);
             _uIManager.UpdateLives(_lives);
 
+        if (_lives == 2)
+        {
+            _rightEngineDamage.SetActive(true);
+        }
+
+        else if (_lives == 1)
+        {
+            _leftEngineDamage.SetActive(true);
+        }
+
         //lives reach 0, destroy the player
         if (_lives <= 0)
         {
@@ -154,7 +162,6 @@ public class Player : MonoBehaviour
 
     public void SpeedUpEnabled()
     {
-        _isSpeedBoostActive = true;
         _speed *= _speedMultiplier;
         StartCoroutine(SpeedUpCountDown());
     }
@@ -162,7 +169,6 @@ public class Player : MonoBehaviour
     IEnumerator SpeedUpCountDown()
     {
         yield return new WaitForSeconds(5f);
-        _isSpeedBoostActive = false;
         _speed /= _speedMultiplier;
     }
 
