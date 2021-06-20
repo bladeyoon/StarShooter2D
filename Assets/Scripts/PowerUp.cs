@@ -10,6 +10,8 @@ public class PowerUp : MonoBehaviour
     [SerializeField] //TripleShot = 0, SpeedUp = 1, Shield = 2
     private int powerUpID;
 
+    [SerializeField]
+    private AudioClip _audioClip;
 
     // Update is called once per frame
     void Update()
@@ -36,7 +38,7 @@ public class PowerUp : MonoBehaviour
 
             if (player != null)
             {
-                switch(powerUpID)
+                switch (powerUpID)
                 {
                     case 0:
                         player.TripleShotEnabled();
@@ -52,6 +54,8 @@ public class PowerUp : MonoBehaviour
                         break;
                 }
             }
+
+            AudioSource.PlayClipAtPoint(_audioClip, transform.position);
 
             Destroy(this.gameObject);
         }

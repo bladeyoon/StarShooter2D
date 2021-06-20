@@ -16,7 +16,13 @@ public class Player : MonoBehaviour
     private GameObject _tripleLaserPrefab;
 
     [SerializeField]
-    private GameObject _ShieldPrefab;
+    private GameObject _shieldPrefab;
+
+    [SerializeField]
+    private AudioClip _laserSoundClip;
+
+    [SerializeField]
+    private AudioSource _audioSource;
 
     private float _laserOffset = 1.2f;
     private float _fireRate = 0.15f;
@@ -56,6 +62,12 @@ public class Player : MonoBehaviour
         if (_uIManager == null)
         {
             Debug.LogError("UI Manager is NULL.");
+        }
+
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null)
+        {
+            Debug.LogError("Audio Source on the player is NULL.");
         }
 
         _rightEngineDamage.SetActive(false);
@@ -115,6 +127,8 @@ public class Player : MonoBehaviour
             {
                 Instantiate(_singleLaserPrefab, transform.position + new Vector3(0, _laserOffset, 0), Quaternion.identity);
             }
+        _audioSource.clip = _laserSoundClip;
+        _audioSource.Play();
     }
 
     public void Damage()
@@ -122,7 +136,7 @@ public class Player : MonoBehaviour
         if (_isShieldActive == true)
         {
             _isShieldActive = false;
-            _ShieldPrefab.SetActive(false);
+            _shieldPrefab.SetActive(false);
             return;
         }
            _lives -= 1; //_lives = _lives - 1 //_lives--;
@@ -144,7 +158,7 @@ public class Player : MonoBehaviour
         {
             //communicate with Spawn Manager & Let them know to stop spawning
             _spawnManager.OnPlayerDeath();
-            Destroy(this.gameObject);
+            Destroy(this.gameObject, .25f);
         }
     }
 
@@ -175,7 +189,7 @@ public class Player : MonoBehaviour
     public void ShieldEnabled()
     {
         _isShieldActive = true;
-        _ShieldPrefab.SetActive(true);
+        _shieldPrefab.SetActive(true);
         StartCoroutine(ShieldCountDown());
     }
 
@@ -183,18 +197,9 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(10f);
         _isShieldActive = false;
-        _ShieldPrefab.SetActive(false);
+        _shieldPrefab.SetActive(false);
     }
 }
-
-
-
-
-
-
-
-
-
 
 
 

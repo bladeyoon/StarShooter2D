@@ -10,6 +10,12 @@ public class Enemy : MonoBehaviour
     private UIManager _uIManager;
 
     [SerializeField]
+    private AudioClip _ExplosionClip;
+
+    [SerializeField]
+    private AudioSource _audioSource;
+
+    [SerializeField]
     private Animator _enemyVFX;
 
     [SerializeField]
@@ -21,6 +27,16 @@ public class Enemy : MonoBehaviour
         if (_uIManager == null)
         {
             Debug.LogError("The UI_Manager is NULL.");
+        }
+
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null)
+        {
+            Debug.LogError("Audio Source is NULL.");
+        }
+        else
+        {
+            _audioSource.clip = _ExplosionClip;
         }
 
         _enemyVFX = GetComponent<Animator>();
@@ -52,6 +68,7 @@ public class Enemy : MonoBehaviour
                 _enemyVFX.SetTrigger("OnEnemyDeath");
                 _isEnemyDying = true;
                 _enemySpeed = 2f;
+                _audioSource.Play();
                 Destroy(this.gameObject, 3f); // destroy Enemy
             }
 
@@ -63,6 +80,7 @@ public class Enemy : MonoBehaviour
                 _enemyVFX.SetTrigger("OnEnemyDeath");
                 _isEnemyDying = true;
                 _enemySpeed = 2f;
+                _audioSource.Play();
                 Destroy(this.gameObject, 3f);
             }
         }
