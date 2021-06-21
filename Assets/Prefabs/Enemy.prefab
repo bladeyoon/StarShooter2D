@@ -51,6 +51,8 @@ MonoBehaviour:
   _uIManager: {fileID: 0}
   _ExplosionClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
   _audioSource: {fileID: 8691230601321901021}
+  _SingleLaserPrefab: {fileID: 6612892307866431247, guid: b949ccd0adae976448ee776d3353baa5,
+    type: 3}
   _enemyVFX: {fileID: 7739448071738764154}
   _isEnemyDying: 0
 --- !u!212 &28935821600641433

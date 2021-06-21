@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 6612892307866431248}
   - component: {fileID: 6612892307866431252}
   m_Layer: 0
-  m_Name: laser
-  m_TagString: Laser
+  m_Name: EnemyLaser
+  m_TagString: EnemyLaser
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _laserSpeed: 8
-  _isEnemyLaser: 0
+  _isEnemyLaser: 1
 --- !u!50 &6612892307866431252
 Rigidbody2D:
   serializedVersion: 4

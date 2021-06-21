@@ -131,6 +131,15 @@ public class Player : MonoBehaviour
         _audioSource.Play();
     }
 
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "EnemyLaser")
+        {
+            Debug.Log("touched laser.");
+            Damage();
+        }
+    }
+
     public void Damage()
     {
         if (_isShieldActive == true)
