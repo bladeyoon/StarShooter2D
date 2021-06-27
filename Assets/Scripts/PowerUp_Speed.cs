@@ -27,5 +27,4 @@ public class PowerUp_Speed : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
 }

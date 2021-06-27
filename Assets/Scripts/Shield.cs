@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Shield : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Shield _shield;
 
-    // Update is called once per frame
-    void Update()
+    public void ShieldFirstHit()
     {
-        
+        _shield.GetComponent<SpriteRenderer>().color = Color.grey;
+    }
+    public void ShieldSecondHit()
+    {
+        //_shield.GetComponent<SpriteRenderer>().color = Color.
     }
 }

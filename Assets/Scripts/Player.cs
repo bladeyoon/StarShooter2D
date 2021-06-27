@@ -1,14 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] //attribute
     private float _speed = 5.5f;
-
-    [SerializeField]
-    private int _speedMultiplier = 2;
 
     [SerializeField] //attribute
     private GameObject _singleLaserPrefab;
@@ -44,7 +42,19 @@ public class Player : MonoBehaviour
     private bool _isShieldActive = false;
 
     [SerializeField]
+    private bool _isBoosterEnabled = false;
+
+    [SerializeField]
     private GameObject _rightEngineDamage, _leftEngineDamage;
+
+    [SerializeField]
+    private BoostBar _boostBar;
+
+    [SerializeField]
+    private int _boostMultiplier;
+
+    [SerializeField]
+    private int _multiplierValue = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -79,6 +89,8 @@ public class Player : MonoBehaviour
     {
         PlayerMovement();
 
+        UsingBoost();
+
         if (Input.GetKey(KeyCode.Space) && Time.time > _canFire)
         {
             FireLaser();
@@ -91,12 +103,8 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        //Alternative Solution to below
-        //transform.Translate(Vector3.right * horizontalInput * _speed * Time.deltaTime);
-        //transform.Translate(Vector3.up * verticalInput * _speed * Time.deltaTime);
-
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-        transform.Translate(direction * _speed * Time.deltaTime);
+        transform.Translate(direction * _speed * Time.deltaTime * _boostMultiplier);
 
         // clipping plane to limit player movement
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -4, 4), transform.position.z);
@@ -144,6 +152,16 @@ public class Player : MonoBehaviour
     {
         if (_isShieldActive == true)
         {
+            /*
+            if ()
+            {
+
+            }
+            if ()
+            {
+
+            }
+            */
             _isShieldActive = false;
             _shieldPrefab.SetActive(false);
             return;
@@ -185,14 +203,27 @@ public class Player : MonoBehaviour
 
     public void SpeedUpEnabled()
     {
-        _speed *= _speedMultiplier;
-        StartCoroutine(SpeedUpCountDown());
+        //Gain 5 second boostpower
+        _boostBar.IncreaseBoostValue(5f);
+        _isBoosterEnabled = true;
     }
 
-    IEnumerator SpeedUpCountDown()
+    public void SpeedUpDisabled()
     {
-        yield return new WaitForSeconds(5f);
-        _speed /= _speedMultiplier;
+        _isBoosterEnabled = false;
+    }
+
+    public void UsingBoost()
+    {  
+        if (Input.GetKey(KeyCode.LeftShift) && (_isBoosterEnabled == true))
+        {
+            _boostMultiplier = _multiplierValue;
+            _boostBar.ReduceBoostValue();
+        }
+        else
+        {
+            _boostMultiplier = 1;
+        }
     }
 
     public void ShieldEnabled()
@@ -209,34 +240,3 @@ public class Player : MonoBehaviour
         _shieldPrefab.SetActive(false);
     }
 }
-
-
-
-// Move an object to right direction in real time
-//transform.Translate(Vector3.right * _speed * Time.deltaTime);
-
-//Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
-//transform.Translate(direction * _speed * Time.deltaTime);
-
-/*
-if (Input.GetKey(KeyCode.D))
-{ 
-    transform.Translate(Vector3.right * speed * Time.deltaTime);
-    //transform.Translate(new Vector3(1, 0, 0) * Time.deltaTime);
-}
-
-if (Input.GetKey(KeyCode.A))
-{
-    transform.Translate(Vector3.left * speed * Time.deltaTime);
-}
-
-if (Input.GetKey(KeyCode.W))
-{
-    transform.Translate(Vector3.up * speed * Time.deltaTime);
-}
-
-if (Input.GetKey(KeyCode.S))
-{
-    transform.Translate(Vector3.down * speed * Time.deltaTime);
-}
-*/
