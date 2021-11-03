@@ -56,6 +56,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _multiplierValue = 3;
 
+    public Shield _shieldScript;
+
+    private int _shieldHits;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,6 +82,12 @@ public class Player : MonoBehaviour
         if (_audioSource == null)
         {
             Debug.LogError("Audio Source on the player is NULL.");
+        }
+
+        _shieldScript = _shieldPrefab.GetComponent<Shield>();
+        if (_shieldScript == null)
+        {
+            Debug.LogError("Shield script is NULL.");
         }
 
         _rightEngineDamage.SetActive(false);
@@ -152,40 +162,47 @@ public class Player : MonoBehaviour
     {
         if (_isShieldActive == true)
         {
-            /*
-            if ()
-            {
+            _shieldHits++;
 
-            }
-            if ()
+            switch (_shieldHits)
             {
-
+                case 1:
+                    _shieldScript.ShieldFirstHit();
+                    break;
+                case 2:
+                    _shieldScript.ShieldSecondHit();
+                    break;
+                case 3:
+                    _shieldPrefab.SetActive(false);
+                    _isShieldActive = false;
+                    break;
             }
-            */
-            _isShieldActive = false;
-            _shieldPrefab.SetActive(false);
-            return;
+            return; //must return; otherwise, player will loose a life after shield is deactivated.
         }
-           _lives -= 1; //_lives = _lives - 1 //_lives--;
-           Debug.Log("Lives = " + _lives);
+
+        if (_isShieldActive == false)
+        {
+            _lives -= 1; //_lives = _lives - 1 //_lives--;
+            Debug.Log("Lives = " + _lives);
             _uIManager.UpdateLives(_lives);
 
-        if (_lives == 2)
-        {
-            _rightEngineDamage.SetActive(true);
-        }
+            if (_lives == 2)
+            {
+                _rightEngineDamage.SetActive(true);
+            }
 
-        else if (_lives == 1)
-        {
-            _leftEngineDamage.SetActive(true);
-        }
+            else if (_lives == 1)
+            {
+                _leftEngineDamage.SetActive(true);
+            }
 
-        //lives reach 0, destroy the player
-        if (_lives <= 0)
-        {
-            //communicate with Spawn Manager & Let them know to stop spawning
-            _spawnManager.OnPlayerDeath();
-            Destroy(this.gameObject, .25f);
+            //lives reach 0, destroy the player
+            if (_lives <= 0)
+            {
+                //communicate with Spawn Manager & Let them know to stop spawning
+                _spawnManager.OnPlayerDeath();
+                Destroy(this.gameObject, .25f);
+            }
         }
     }
 
@@ -230,13 +247,16 @@ public class Player : MonoBehaviour
     {
         _isShieldActive = true;
         _shieldPrefab.SetActive(true);
-        StartCoroutine(ShieldCountDown());
+        _shieldHits = 0;
+        //StartCoroutine(ShieldCountDown());
     }
 
+    /*
     IEnumerator ShieldCountDown()
     {
         yield return new WaitForSeconds(10f);
         _isShieldActive = false;
         _shieldPrefab.SetActive(false);
     }
+    */
 }

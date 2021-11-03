@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -377,6 +377,7 @@ MonoBehaviour:
   _boostBar: {fileID: 1698082430}
   _boostMultiplier: 0
   _multiplierValue: 3
+  _shieldScript: {fileID: 0}
 --- !u!212 &371457410
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -443,7 +444,7 @@ Transform:
   - {fileID: 1410659298}
   - {fileID: 314196282}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &371457412
 BoxCollider2D:
@@ -967,7 +968,7 @@ Transform:
   m_Children:
   - {fileID: 1418945490}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1101951075 stripped
 Transform:
@@ -1054,7 +1055,7 @@ Transform:
   m_LocalScale: {x: 1.09, y: 1.09, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1327659948
 GameObject:
@@ -1219,7 +1220,7 @@ RectTransform:
   - {fileID: 1696238568}
   - {fileID: 1698082428}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1968,7 +1969,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1941967297
 GameObject:
@@ -2043,7 +2044,7 @@ Transform:
   m_Children:
   - {fileID: 1327659949}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2068795671
 GameObject:
@@ -2186,6 +2187,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Thruster
       objectReference: {fileID: 0}
+    - target: {fileID: 6635867365823975412, guid: 2ed0488960e29644db923ac7d258ff4b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8159824484453929182, guid: 2ed0488960e29644db923ac7d258ff4b,
         type: 3}
       propertyPath: m_SortingLayer
@@ -2223,7 +2229,7 @@ PrefabInstance:
     - target: {fileID: 6863515295195508085, guid: 884b9f1e3b85189468271f3add974696,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6863515295195508085, guid: 884b9f1e3b85189468271f3add974696,
         type: 3}
@@ -2367,7 +2373,7 @@ PrefabInstance:
     - target: {fileID: 6151351416560016778, guid: 3b5d9cc03f5bb2d4da8f98717bb8f99e,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b5d9cc03f5bb2d4da8f98717bb8f99e, type: 3}
