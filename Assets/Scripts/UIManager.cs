@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     private Text _gameOverText;
     [SerializeField]
     private Text _restartText;
+    [SerializeField]
+    private Text _ammoCountText;
 
     [SerializeField]
     private int _score;
@@ -38,6 +40,12 @@ public class UIManager : MonoBehaviour
         _gameOverText.gameObject.SetActive(false);
         //assign text component to the handle
         _scoreText.text = "Score: " + 0;
+        _ammoCountText.text = "Ammo Count: " + 15;
+    }
+
+    public void DisplayAmmoCount()
+    {
+        _ammoCountText.text = "Ammo Count: ";
     }
 
     public void AddScore(int _killPoint)

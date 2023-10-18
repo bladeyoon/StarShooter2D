@@ -20,6 +20,9 @@ public class Player : MonoBehaviour
     private AudioClip _laserSoundClip;
 
     [SerializeField]
+    private AudioClip _feedBackSoundClip;
+
+    [SerializeField]
     private AudioSource _audioSource;
 
     private float _laserOffset = 1.2f;
@@ -60,6 +63,12 @@ public class Player : MonoBehaviour
 
     private int _shieldHits;
 
+    [SerializeField]
+    private int _ammoCount;
+
+    [SerializeField]
+    private Text _ammoCountText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -92,6 +101,10 @@ public class Player : MonoBehaviour
 
         _rightEngineDamage.SetActive(false);
         _leftEngineDamage.SetActive(false);
+
+        //Start the game with ammo count of 15 and display on UI
+        _ammoCount = 15;
+        _ammoCountText.text = "Ammo Count: " + _ammoCount.ToString();
     }
 
     // Update is called once per frame
@@ -134,8 +147,12 @@ public class Player : MonoBehaviour
     void FireLaser()
     {
         Debug.Log("Space bar pressed.");
+        _ammoCount--;
+        Debug.Log("Ammo: " + _ammoCount);
 
-        _canFire = Time.time + _fireRate;
+        if (_ammoCount > 0)
+        {
+            _canFire = Time.time + _fireRate;
 
             if (_isTripleShotActive == true)
             {
@@ -145,8 +162,16 @@ public class Player : MonoBehaviour
             {
                 Instantiate(_singleLaserPrefab, transform.position + new Vector3(0, _laserOffset, 0), Quaternion.identity);
             }
-        _audioSource.clip = _laserSoundClip;
-        _audioSource.Play();
+            _audioSource.clip = _laserSoundClip;
+            _audioSource.Play();
+        }
+
+        else
+        {
+            _audioSource.clip = _feedBackSoundClip;
+            _audioSource.Play();
+        }
+
     }
 
     public void OnTriggerEnter2D(Collider2D other)
@@ -248,15 +273,6 @@ public class Player : MonoBehaviour
         _isShieldActive = true;
         _shieldPrefab.SetActive(true);
         _shieldHits = 0;
-        //StartCoroutine(ShieldCountDown());
+        _shieldPrefab.GetComponent<SpriteRenderer>().color = new Color(0f, 200f, 255f);
     }
-
-    /*
-    IEnumerator ShieldCountDown()
-    {
-        yield return new WaitForSeconds(10f);
-        _isShieldActive = false;
-        _shieldPrefab.SetActive(false);
-    }
-    */
 }
